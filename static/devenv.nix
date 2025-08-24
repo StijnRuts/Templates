@@ -1,7 +1,8 @@
 { pkgs, config, ... }:
 let
   DOMAIN = "example.localhost";
-in {
+in
+{
   certificates = [ DOMAIN ];
 
   services.caddy = {
@@ -20,4 +21,3 @@ in {
     sudo setcap 'cap_net_bind_service=+ep' ${pkgs.caddy}/bin/caddy
   '';
 }
-

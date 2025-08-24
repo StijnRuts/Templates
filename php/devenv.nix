@@ -6,7 +6,8 @@ let
   DB_NAME = "devdb";
   DB_USER = "devuser";
   DB_PASSWORD = "password";
-in {
+in
+{
   env = {
     inherit DB_HOST;
     inherit DB_PORT;
@@ -54,12 +55,14 @@ in {
     package = pkgs.postgresql_16;
     listen_addresses = "localhost";
     port = DB_PORT;
-    initialDatabases = [{
-      name = DB_NAME;
-      user = DB_USER;
-      pass = DB_PASSWORD;
-      schema = ./schema.sql;
-    }];
+    initialDatabases = [
+      {
+        name = DB_NAME;
+        user = DB_USER;
+        pass = DB_PASSWORD;
+        schema = ./schema.sql;
+      }
+    ];
   };
 
   services.caddy = {

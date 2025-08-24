@@ -5,7 +5,8 @@ let
   DB_NAME = "wp";
   DB_USER = "wordpress";
   DB_PASSWORD = "password";
-in {
+in
+{
   env = {
     inherit DOMAIN;
     inherit DB_PORT;

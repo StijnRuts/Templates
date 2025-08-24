@@ -24,5 +24,7 @@
   '';
 
   # This launces the local Caddy
-  processes.caddy-local.exec = ''${lib.replaceString "${pkgs.caddy}" "." config.processes.caddy.exec}'';
+  processes.caddy-local.exec = ''
+    ${lib.replaceString "${pkgs.caddy}" "." config.processes.caddy.exec}
+  '';
 }

@@ -1,6 +1,5 @@
 # Devenv
 .devenv*
-devenv.local.nix
 bin/caddy
 bin/sass
 

@@ -27,4 +27,10 @@
   processes.caddy-local.exec = ''
     ${lib.replaceString "${pkgs.caddy}" "." config.processes.caddy.exec}
   '';
+
+  # This creates a local copy of SASS
+  scripts.local-sass.exec = lib.mkForce ''
+    mkdir -p ./bin
+    cp ${pkgs.dart-sass}/bin/sass ./bin/sass
+  '';
 }
