@@ -15,7 +15,6 @@ in {
   };
 
   packages = with pkgs; [
-    git
     wp-cli
   ];
 

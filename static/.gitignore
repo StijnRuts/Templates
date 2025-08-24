@@ -1,7 +1,7 @@
 # Devenv
 .devenv*
 devenv.local.nix
-bin
+bin/caddy
 
 # direnv
 .direnv

@@ -1,0 +1,37 @@
+# Devenv
+.devenv*
+devenv.local.nix
+bin/caddy
+bin/sass
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+# PHP runtimes
+vendor/
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+###< symfony/framework-bundle ###
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
+
+###> phpunit/phpunit ###
+/.phpunit.cache/
+/phpunit.xml
+###< phpunit/phpunit ###
