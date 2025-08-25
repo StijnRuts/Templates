@@ -1,0 +1,8 @@
+{
+  "name": "purescript",
+  "version": "1.0.0",
+  "scripts": {
+    "pscid:build": "bundle",
+    "pscid:test": "test"
+  }
+}

@@ -1,0 +1,26 @@
+# Devenv
+.devenv*
+devenv.local.nix
+bin/caddy
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+# JavaScript runtime
+node_modules/
+
+# PureScript runtime
+bower_components/
+.pulp-cache/
+output/
+output-es/
+generated-docs/
+.psc-package/
+.psc*
+.purs*
+.psa*
+.spago
+index.js
