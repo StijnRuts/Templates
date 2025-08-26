@@ -3,9 +3,13 @@
   pkgs,
   lib,
   config,
+  devenv-zsh,
   ...
 }:
 {
+  imports = [ devenv-zsh.plugin ];
+  zsh.enable = true;
+
   packages = with pkgs; [
     mkcert # For generating certificates
     nssTools # For installing the root certificate

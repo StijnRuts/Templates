@@ -7,6 +7,8 @@ inputs:
     inputs:
       nixpkgs:
         follows: nixpkgs
+  devenv-zsh:
+    url: github:mcdonc/devenv-zsh
 
 # If you're using non-OSS software, you can set allowUnfree to true.
 # allowUnfree: true

@@ -4,6 +4,8 @@ inputs:
     url: github:cachix/devenv-nixpkgs/rolling
   easy-purescript-nix:
     url: github:justinwoo/easy-purescript-nix
+  devenv-zsh:
+    url: github:mcdonc/devenv-zsh
 
 # If you're using non-OSS software, you can set allowUnfree to true.
 # allowUnfree: true
