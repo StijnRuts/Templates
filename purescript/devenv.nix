@@ -19,12 +19,14 @@ in
     easy-ps.psa
     easy-ps.pscid
     easy-ps.purs-backend-es
-    pkgs.nodejs_24
     pkgs.esbuild
   ];
 
+  languages.purescript.enable = true;
+
   languages.javascript = {
     enable = true;
+    package = pkgs.nodejs-slim_24;
     npm.enable = true;
   };
 

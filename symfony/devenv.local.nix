@@ -27,7 +27,7 @@
     sudo setcap 'cap_net_bind_service=+ep' ./bin/caddy
   '';
 
-  # This launces the local Caddy
+  # This launches the local Caddy
   processes.caddy-local.exec = ''
     ${lib.replaceString "${pkgs.caddy}" "." config.processes.caddy.exec}
   '';
