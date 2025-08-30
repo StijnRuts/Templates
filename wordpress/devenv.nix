@@ -1,19 +1,14 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   DOMAIN = "wp.localhost";
-  DB_PORT = 3306;
-  DB_NAME = "wp";
-  DB_USER = "wordpress";
-  DB_PASSWORD = "password";
 in
 {
-  env = {
-    inherit DOMAIN;
-    inherit DB_PORT;
-    inherit DB_NAME;
-    inherit DB_USER;
-    inherit DB_PASSWORD;
-  };
+  dotenv.enable = true;
 
   packages = with pkgs; [
     wp-cli
@@ -57,16 +52,16 @@ in
   services.mysql = {
     enable = true;
     settings.mysqld = {
-      port = DB_PORT;
+      port = lib.toInt config.env.DB_PORT;
       max_allowed_packet = "512M";
     };
-    initialDatabases = [ { name = DB_NAME; } ];
+    initialDatabases = [ { name = config.env.DB_NAME; } ];
     ensureUsers = [
       {
-        name = DB_USER;
-        password = DB_PASSWORD;
+        name = config.env.DB_USER;
+        password = config.env.DB_PASSWORD;
         ensurePermissions = {
-          "${DB_NAME}.*" = "ALL PRIVILEGES";
+          "${config.env.DB_NAME}.*" = "ALL PRIVILEGES";
         };
       }
     ];

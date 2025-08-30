@@ -1,23 +1,15 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   DOMAIN = "symfony.localhost";
-  DB_HOST = "localhost";
-  DB_PORT = 5432;
-  DB_NAME = "devdb";
-  DB_USER = "devuser";
-  DB_PASSWORD = "password";
 in
 {
-  env = {
-    inherit DB_HOST;
-    inherit DB_PORT;
-    inherit DB_NAME;
-    inherit DB_USER;
-    inherit DB_PASSWORD;
-    DATABASE_URL = "postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${toString DB_PORT}/${DB_NAME}?serverVersion=16&charset=utf8";
-  };
-
   dotenv.enable = true;
+  env.DATABASE_URL = "postgresql://${config.env.DB_USER}:${config.env.DB_PASSWORD}@${config.env.DB_HOST}:${config.env.DB_PORT}/${config.env.DB_NAME}?serverVersion=16&charset=utf8";
 
   certificates = [ DOMAIN ];
 
@@ -56,12 +48,12 @@ in
     enable = true;
     package = pkgs.postgresql_16;
     listen_addresses = "localhost";
-    port = DB_PORT;
+    port = lib.toInt config.env.DB_PORT;
     initialDatabases = [
       {
-        name = DB_NAME;
-        user = DB_USER;
-        pass = DB_PASSWORD;
+        name = config.env.DB_NAME;
+        user = config.env.DB_USER;
+        pass = config.env.DB_PASSWORD;
         # schema = ./schema.sql;
       }
     ];

@@ -1,20 +1,14 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   DOMAIN = "example.localhost";
-  DB_HOST = "localhost";
-  DB_PORT = 5432;
-  DB_NAME = "devdb";
-  DB_USER = "devuser";
-  DB_PASSWORD = "password";
 in
 {
-  env = {
-    inherit DB_HOST;
-    inherit DB_PORT;
-    inherit DB_NAME;
-    inherit DB_USER;
-    inherit DB_PASSWORD;
-  };
+  dotenv.enable = true;
 
   packages = with pkgs; [
     php83Packages.php-cs-fixer
@@ -54,12 +48,12 @@ in
     enable = true;
     package = pkgs.postgresql_16;
     listen_addresses = "localhost";
-    port = DB_PORT;
+    port = lib.toInt config.env.DB_PORT;
     initialDatabases = [
       {
-        name = DB_NAME;
-        user = DB_USER;
-        pass = DB_PASSWORD;
+        name = config.env.DB_NAME;
+        user = config.env.DB_USER;
+        pass = config.env.DB_PASSWORD;
         schema = ./schema.sql;
       }
     ];
