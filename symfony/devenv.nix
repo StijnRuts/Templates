@@ -10,6 +10,7 @@ in
 {
   dotenv.enable = true;
   env.DATABASE_URL = "postgresql://${config.env.DB_USER}:${config.env.DB_PASSWORD}@${config.env.DB_HOST}:${config.env.DB_PORT}/${config.env.DB_NAME}?serverVersion=16&charset=utf8";
+  env.MAILER_DSN = "smtp://${config.env.SMTP_USER}:${config.env.SMTP_PASSWORD}@${config.env.SMTP_HOST}:${config.env.SMTP_PORT}";
 
   certificates = [ DOMAIN ];
 
@@ -57,6 +58,12 @@ in
         # schema = ./schema.sql;
       }
     ];
+  };
+
+  services.mailpit = {
+    enable = true;
+    smtpListenAddress = "127.0.0.1:${config.env.SMTP_PORT}";
+    uiListenAddress = "127.0.0.1:${config.env.SMTP_UI_PORT}";
   };
 
   services.caddy = {
