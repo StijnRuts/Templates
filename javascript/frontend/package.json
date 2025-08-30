@@ -5,7 +5,7 @@
     "build": "webpack --mode development",
     "build:watch": "webpack --watch --mode development",
     "build:prod": "webpack --mode production",
-    "format": "prettier --write .",
+    "format": "prettier --write src test",
     "lint": "eslint src test",
     "test": "karma start --no-auto-watch --single-run",
     "test:watch": "karma start --auto-watch"

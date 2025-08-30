@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outFile": "public/index.js",
+    "module": "system",
+    "isolatedModules": false,
+    "sourceMap": true
+  },
+  "files": ["src/index.ts"],
+  "extends": [
+    "@tsconfig/recommended/tsconfig.json",
+    "@tsconfig/strictest/tsconfig.json"
+  ]
+}
