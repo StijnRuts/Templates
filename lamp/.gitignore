@@ -1,0 +1,13 @@
+# Devenv
+.devenv*
+devenv.local.nix
+bin/httpd
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+# PHP runtimes
+vendor/
