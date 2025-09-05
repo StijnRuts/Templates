@@ -61,8 +61,8 @@ in
   services.apache = {
     enable = true;
     hostname = DOMAIN;
-    sslCert = "${config.env.DEVENV_STATE}/mkcert/example.localhost+1.pem";
-    sslKey = "${config.env.DEVENV_STATE}/mkcert/example.localhost+1-key.pem";
+    sslCert = "${config.env.DEVENV_STATE}/mkcert/${DOMAIN}+1.pem";
+    sslKey = "${config.env.DEVENV_STATE}/mkcert/${DOMAIN}+1-key.pem";
     phpSocket = "${config.languages.php.fpm.pools.web.socket}";
   };
 
