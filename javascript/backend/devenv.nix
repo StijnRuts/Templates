@@ -1,4 +1,3 @@
-{ pkgs, lib, ... }:
 {
   processes.backend.exec = "node $DEVENV_ROOT/backend/src/server.js";
 

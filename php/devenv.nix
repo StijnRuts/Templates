@@ -16,12 +16,14 @@ in
     php84Packages.deployer
   ];
 
-  scripts."style:check".exec = "php-cs-fixer check src";
-  scripts."style:fix".exec = "php-cs-fixer fix src";
-  scripts."code:check".exec = "psalm --show-info=true";
-  scripts."code:fix".exec = "psalm --alter --issues=all";
-  scripts."test".exec = "./vendor/bin/phpunit tests";
-  scripts."deploy".exec = "dep deploy";
+  scripts = {
+    "style:check".exec = "php-cs-fixer check src";
+    "style:fix".exec = "php-cs-fixer fix src";
+    "code:check".exec = "psalm --show-info=true";
+    "code:fix".exec = "psalm --alter --issues=all";
+    "test".exec = "./vendor/bin/phpunit tests";
+    "deploy".exec = "dep deploy";
+  };
 
   certificates = [ DOMAIN ];
 

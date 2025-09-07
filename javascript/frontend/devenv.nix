@@ -1,4 +1,3 @@
-{ pkgs, lib, ... }:
 {
   scripts = {
     "build:frontend".exec = "pushd $DEVENV_ROOT/frontend; npm run build; popd";
