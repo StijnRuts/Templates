@@ -77,4 +77,16 @@ in
   scripts.caddy-setcap.exec = ''
     sudo setcap 'cap_net_bind_service=+ep' ${pkgs.caddy}/bin/caddy
   '';
+
+  git-hooks.hooks = {
+    typos.enable = true;
+    markdownlint.enable = true;
+    nixfmt-rfc-style.enable = true;
+    statix.enable = true;
+    deadnix.enable = true;
+    prettier.enable = true;
+    php-cs-fixer.enable = true;
+    phpcs.enable = true;
+    psalm.enable = true;
+  };
 }

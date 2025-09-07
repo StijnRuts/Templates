@@ -39,6 +39,7 @@ in
       spago build --config spago-prod.dhall \
         && purs-backend-es bundle-app --no-build --to public/index.js --minify
     '';
+    format.exec = "purs-tidy format-in-place 'src/**/*.purs'";
     repl.exec = "spago repl";
     interactive.exec = "pscid";
     docs.exec = "spago docs --format html --open";
@@ -60,4 +61,19 @@ in
   scripts.caddy-setcap.exec = ''
     sudo setcap 'cap_net_bind_service=+ep' ${pkgs.caddy}/bin/caddy
   '';
+
+  git-hooks.hooks = {
+    typos.enable = true;
+    markdownlint.enable = true;
+    nixfmt-rfc-style.enable = true;
+    statix.enable = true;
+    deadnix.enable = true;
+    prettier.enable = true;
+    purs-tidy = {
+      enable = true;
+      name = "purs-tidy";
+      entry = "purs-tidy format-in-place";
+      files = "\\.purs$";
+    };
+  };
 }
