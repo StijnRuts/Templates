@@ -9,4 +9,4 @@ devenv.local.nix
 .pre-commit-config.yaml
 
 # Haskell
-dist-*/cache
+output

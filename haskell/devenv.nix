@@ -2,15 +2,18 @@
 {
   languages.haskell = {
     enable = true;
-    package = pkgs.haskell.compiler.ghc9103;
+    package = pkgs.haskell.packages.ghc9103.ghcWithPackages (ps: with ps; [
+      hspec
+      QuickCheck
+    ]);
   };
 
   scripts = {
-    build.exec = "cabal build";
-    run.exec = "cabal run";
-    tests.exec = "cabal test";
-    format.exec = "ormolu --mode inplace $(find {app,test} -name '*.hs')";
-    lint.exec = "hlint {app,test}";
+    build.exec = "mkdir -p output && ghc -Wall -outputdir output -o output/main -i=src src/Main.hs";
+    run.exec = "ghc -Wall -i=src --run src/Main.hs";
+    tests.exec = "ghc -Wall -i=src -i=test --run test/Main.hs";
+    format.exec = "ormolu --mode inplace $(find {src,test} -name '*.hs')";
+    lint.exec = "hlint {src,test}";
   };
 
   git-hooks.hooks = {
