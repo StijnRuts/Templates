@@ -1,0 +1,3 @@
+:set -isrc -itest
+:load src/Main.hs
+:load test/Test/Main.hs
