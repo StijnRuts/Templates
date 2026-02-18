@@ -10,12 +10,7 @@ module.exports = function (config) {
     frameworks: ["mocha"],
 
     // list of files / patterns to load in the browser
-    files: [
-      "src/**/*.js",
-      "src/**/*.mjs",
-      "test/**/*.js",
-      "test/**/*.mjs",
-    ],
+    files: ["src/**/*.js", "src/**/*.mjs", "test/**/*.js", "test/**/*.mjs"],
 
     // list of files / patterns to exclude
     exclude: [],
@@ -29,7 +24,7 @@ module.exports = function (config) {
       "test/**/*.mjs": ["webpack"],
     },
 
-    webpack: require('./webpack.config.js'),
+    webpack: require("./webpack.config.js"),
 
     // test results reporter to use
     // possible values: 'dots', 'progress'

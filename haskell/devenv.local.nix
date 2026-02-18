@@ -1,4 +1,5 @@
-{devenv-zsh, ...}: {
-  imports = [devenv-zsh.plugin];
+{ devenv-zsh, ... }:
+{
+  imports = [ devenv-zsh.plugin ];
   zsh.enable = true;
 }

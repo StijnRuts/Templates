@@ -1,14 +1,13 @@
 { pkgs, config, ... }:
 let
   DOMAIN = "example.localhost";
-  BACKEND_PORT = 3000;
 in
 {
-  env = {
-    inherit BACKEND_PORT;
-  };
-
   certificates = [ DOMAIN ];
+
+  packages = with pkgs; [
+    watchexec
+  ];
 
   languages.javascript = {
     enable = true;
@@ -17,8 +16,11 @@ in
   };
 
   scripts = {
-    "format:all".exec = "format:backend && format:frontend";
-    "lint:all".exec = "lint:backend && lint:frontend";
+    "format".exec = "treefmt";
+  };
+
+  processes = {
+    "format:watch".exec = "watchexec format";
   };
 
   services.caddy = {
@@ -28,23 +30,34 @@ in
         tls ${config.env.DEVENV_STATE}/mkcert/${DOMAIN}.pem ${config.env.DEVENV_STATE}/mkcert/${DOMAIN}-key.pem
         root * public
         file_server
-        reverse_proxy /api/* localhost:${toString BACKEND_PORT}
+        reverse_proxy /api/* localhost:${toString config.env.BACKEND_PORT}
       '';
+    };
+    config = ''
+      {
+        admin off
+        http_port ${toString config.processes.caddy.ports.http.value}
+        https_port ${toString config.processes.caddy.ports.https.value}
+      }
+    '';
+  };
+
+  processes.caddy = {
+    ports.http.allocate = 8080;
+    ports.https.allocate = 8443;
+  };
+
+  treefmt = {
+    enable = true;
+    config.programs = {
+      nixfmt.enable = true;
+      deadnix.enable = true;
+      statix.enable = true;
+      prettier.enable = true;
     };
   };
 
-  # This lets Caddy bind to privileged ports like 80 and 443
-  scripts.caddy-setcap.exec = ''
-    sudo setcap 'cap_net_bind_service=+ep' ${pkgs.caddy}/bin/caddy
-  '';
-
   git-hooks.hooks = {
-    typos.enable = true;
-    markdownlint.enable = true;
-    nixfmt-rfc-style.enable = true;
-    statix.enable = true;
-    deadnix.enable = true;
-    prettier.enable = true;
-    eslint.enable = true;
+    treefmt.enable = true;
   };
 }

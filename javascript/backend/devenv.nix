@@ -1,10 +1,32 @@
 {
-  processes.backend.exec = "node $DEVENV_ROOT/backend/src/server.js";
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  processes.backend = {
+    ports.http.allocate = 3000;
+    exec = "node $DEVENV_ROOT/backend/src/server.js";
+  };
+
+  env = {
+    BACKEND_PORT = config.processes.backend.ports.http.value;
+  };
 
   scripts = {
-    "format:backend".exec = "pushd $DEVENV_ROOT/backend; npm run format; popd";
-    "lint:backend".exec = "pushd $DEVENV_ROOT/backend; npm run lint; popd";
     "test:backend".exec = "pushd $DEVENV_ROOT/backend; npm run test; popd";
-    "test:watch:backend".exec = "pushd $DEVENV_ROOT/backend; npm run test:watch; popd";
+  };
+
+  processes = {
+    "test:watch:backend".exec = "cd $DEVENV_ROOT/backend; npm run test:watch";
+  };
+
+  treefmt.config.settings.formatter = {
+    "eslint-backend" = {
+      command = "${lib.getExe pkgs.eslint}";
+      options = [ "--config backend/eslint.config.mjs" ];
+      includes = [ "backend/**/*.js" ];
+    };
   };
 }

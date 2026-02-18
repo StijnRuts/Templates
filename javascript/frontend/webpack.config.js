@@ -14,16 +14,14 @@ module.exports = {
         test: /\.(?:js|mjs|cjs)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
             targets: "defaults",
-            presets: [
-              ['@babel/preset-env']
-            ]
-          }
-        }
-      }
-    ]
+            presets: [["@babel/preset-env"]],
+          },
+        },
+      },
+    ],
   },
   output: {
     filename: "index.[contenthash].js",

@@ -12,7 +12,7 @@ describe("Addition", () => {
   it("should be associative", () => {
     jsc.assert(
       jsc.forall("number", "number", "number", (a, b, c) => {
-        return a + (b + c) === (a + b) + c;
+        return a + (b + c) === a + b + c;
       }),
     );
   });
