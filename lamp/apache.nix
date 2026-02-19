@@ -24,8 +24,8 @@ let
 
     ServerName ${cfg.hostname}
 
-    Listen 80
-    <VirtualHost *:80>
+    Listen ${toString cfg.httpPort}
+    <VirtualHost *:${toString cfg.httpPort}>
       ServerName ${cfg.hostname}
       ServerAlias www.${cfg.hostname}
 
@@ -42,8 +42,8 @@ let
       </FilesMatch>
     </VirtualHost>
 
-    Listen 443
-    <VirtualHost *:443>
+    Listen ${toString cfg.httpsPort}
+    <VirtualHost *:${toString cfg.httpsPort}>
       ServerName ${cfg.hostname}
       ServerAlias www.${cfg.hostname}
 
@@ -81,6 +81,16 @@ in
     hostname = lib.mkOption {
       type = lib.types.str;
       description = "The domain name of the website.";
+    };
+
+    httpPort = lib.mkOption {
+      type = lib.types.int;
+      description = "The http port the website.";
+    };
+
+    httpsPort = lib.mkOption {
+      type = lib.types.int;
+      description = "The https port the website.";
     };
 
     sslCert = lib.mkOption {

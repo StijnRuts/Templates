@@ -1,7 +1,5 @@
 {
   pkgs,
-  lib,
-  config,
   ...
 }:
 {
@@ -14,15 +12,4 @@
   scripts.install-certificate.exec = ''
     mkcert -install
   '';
-
-  # This creates a local copy of Apache that can bind to privileged ports like 80 and 443
-  scripts.apache-setcap.exec = lib.mkForce ''
-    mkdir -p ./bin
-    cp ${pkgs.apacheHttpd}/bin/httpd ./bin/httpd
-    sudo setcap 'cap_net_bind_service=+ep' ./bin/httpd
-  '';
-
-  # This launces the local Apache
-  processes.apache-local.exec = ''${lib.replaceString "${pkgs.apacheHttpd
-  }" "." config.processes.apache.exec}'';
 }

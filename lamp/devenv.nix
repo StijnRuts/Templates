@@ -8,12 +8,18 @@ let
   DOMAIN = "example.localhost";
 in
 {
-  dotenv.enable = true;
-
   certificates = [
     DOMAIN
     ("www." + DOMAIN)
   ];
+
+  env = {
+    DB_HOST = "localhost";
+    DB_PORT = toString config.processes.mysql.ports.db.value;
+    DB_NAME = "devdb";
+    DB_USER = "devuser";
+    DB_PASSWORD = "password";
+  };
 
   languages.php = {
     enable = true;
@@ -58,26 +64,39 @@ in
     ];
   };
 
+  processes.mysql = {
+    ports.db.allocate = 3306;
+  };
+
   services.apache = {
     enable = true;
     hostname = DOMAIN;
+    httpPort = config.processes.apache.ports.http.value;
+    httpsPort = config.processes.apache.ports.https.value;
     sslCert = "${config.env.DEVENV_STATE}/mkcert/${DOMAIN}+1.pem";
     sslKey = "${config.env.DEVENV_STATE}/mkcert/${DOMAIN}+1-key.pem";
     phpSocket = "${config.languages.php.fpm.pools.web.socket}";
   };
 
-  # This lets Apache bind to 80 and 443
-  scripts.apache-setcap.exec = ''
-    sudo setcap 'cap_net_bind_service=+ep' ${pkgs.apacheHttpd}/bin/httpd
-  '';
+  processes.apache = {
+    ports.http.allocate = 8080;
+    ports.https.allocate = 8443;
+  };
+
+  treefmt = {
+    enable = true;
+    config.programs = {
+      nixfmt.enable = true;
+      deadnix.enable = true;
+      statix.enable = true;
+      prettier.enable = true;
+    };
+  };
 
   git-hooks.hooks = {
+    treefmt.enable = true;
     typos.enable = true;
     markdownlint.enable = true;
-    nixfmt-rfc-style.enable = true;
-    statix.enable = true;
-    deadnix.enable = true;
-    prettier.enable = true;
     php-cs-fixer.enable = true;
     phpcs.enable = true;
     psalm.enable = true;

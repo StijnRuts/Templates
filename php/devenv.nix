@@ -8,12 +8,20 @@ let
   DOMAIN = "example.localhost";
 in
 {
-  dotenv.enable = true;
+  certificates = [ DOMAIN ];
+
+  env = {
+    DB_HOST = "localhost";
+    DB_PORT = toString config.processes.postgres.ports.db.value;
+    DB_NAME = "devdb";
+    DB_USER = "devuser";
+    DB_PASSWORD = "password";
+  };
 
   packages = with pkgs; [
     php83Packages.php-cs-fixer
     php84Packages.psalm
-    php84Packages.deployer
+    deployer
   ];
 
   scripts = {
@@ -21,11 +29,9 @@ in
     "style:fix".exec = "php-cs-fixer fix src";
     "code:check".exec = "psalm --show-info=true";
     "code:fix".exec = "psalm --alter --issues=all";
-    "test".exec = "./vendor/bin/phpunit tests";
+    "tests".exec = "./vendor/bin/phpunit tests";
     "deploy".exec = "dep deploy";
   };
-
-  certificates = [ DOMAIN ];
 
   languages.php = {
     enable = true;
@@ -49,7 +55,7 @@ in
   services.postgres = {
     enable = true;
     package = pkgs.postgresql_16;
-    listen_addresses = "localhost";
+    listen_addresses = config.env.DB_HOST;
     port = lib.toInt config.env.DB_PORT;
     initialDatabases = [
       {
@@ -59,6 +65,10 @@ in
         schema = ./schema.sql;
       }
     ];
+  };
+
+  processes.postgres = {
+    ports.db.allocate = 5432;
   };
 
   services.caddy = {
@@ -71,20 +81,34 @@ in
         file_server
       '';
     };
+    config = ''
+      {
+        admin off
+        http_port ${toString config.processes.caddy.ports.http.value}
+        https_port ${toString config.processes.caddy.ports.https.value}
+      }
+    '';
   };
 
-  # This lets Caddy bind to 443
-  scripts.caddy-setcap.exec = ''
-    sudo setcap 'cap_net_bind_service=+ep' ${pkgs.caddy}/bin/caddy
-  '';
+  processes.caddy = {
+    ports.http.allocate = 8080;
+    ports.https.allocate = 8443;
+  };
+
+  treefmt = {
+    enable = true;
+    config.programs = {
+      nixfmt.enable = true;
+      deadnix.enable = true;
+      statix.enable = true;
+      prettier.enable = true;
+    };
+  };
 
   git-hooks.hooks = {
+    treefmt.enable = true;
     typos.enable = true;
     markdownlint.enable = true;
-    nixfmt-rfc-style.enable = true;
-    statix.enable = true;
-    deadnix.enable = true;
-    prettier.enable = true;
     php-cs-fixer.enable = true;
     phpcs.enable = true;
     psalm.enable = true;
