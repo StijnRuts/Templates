@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   easy-purescript-nix,
   config,
   ...
@@ -12,14 +13,14 @@ in
   certificates = [ DOMAIN ];
 
   packages = [
-    easy-ps.purs-0_15_9
+    easy-ps.purs-0_15_15
     easy-ps.purescript-language-server
     easy-ps.spago
     easy-ps.purs-tidy
     easy-ps.psa
     easy-ps.pscid
-    easy-ps.purs-backend-es
     pkgs.esbuild
+    pkgs.watchexec
   ];
 
   languages.purescript.enable = true;
@@ -33,17 +34,17 @@ in
   scripts = {
     run.exec = "spago run";
     build.exec = "spago build";
-    bundle.exec = "spago bundle-app --to public/index.js --source-maps";
-    watch.exec = "spago bundle-app --to public/index.js --source-maps --watch";
-    prod.exec = ''
-      spago build --config spago-prod.dhall \
-        && purs-backend-es bundle-app --no-build --to public/index.js --minify
-    '';
-    format.exec = "purs-tidy format-in-place 'src/**/*.purs'";
+    bundle.exec = "spago bundle --outfile public/index.js --source-maps";
+    format.exec = "treefmt";
     repl.exec = "spago repl";
     interactive.exec = "pscid";
     docs.exec = "spago docs --format html --open";
-    test.exec = "spago test --config spago-test.dhall";
+    tests.exec = "spago test";
+  };
+
+  processes = {
+    "build:watch".exec = "watchexec -c -w src -w test -e purs 'build && tests'";
+    "format:watch".exec = "watchexec format";
   };
 
   services.caddy = {
@@ -55,25 +56,39 @@ in
         file_server
       '';
     };
+    config = ''
+      {
+        admin off
+        http_port ${toString config.processes.caddy.ports.http.value}
+        https_port ${toString config.processes.caddy.ports.https.value}
+      }
+    '';
   };
 
-  # This lets Caddy bind to privileged ports like 80 and 443
-  scripts.caddy-setcap.exec = ''
-    sudo setcap 'cap_net_bind_service=+ep' ${pkgs.caddy}/bin/caddy
-  '';
+  processes.caddy = {
+    ports.http.allocate = 8080;
+    ports.https.allocate = 8443;
+  };
+
+  treefmt = {
+    enable = true;
+    config.programs = {
+      nixfmt.enable = true;
+      statix.enable = true;
+      deadnix.enable = true;
+      prettier.enable = true;
+    };
+  };
+
+  treefmt.config.settings.formatter = {
+    "purs-tidy" = {
+      command = "${lib.getExe easy-ps.purs-tidy}";
+      options = [ "format-in-place" ];
+      includes = [ "*.purs" ];
+    };
+  };
 
   git-hooks.hooks = {
-    typos.enable = true;
-    markdownlint.enable = true;
-    nixfmt-rfc-style.enable = true;
-    statix.enable = true;
-    deadnix.enable = true;
-    prettier.enable = true;
-    purs-tidy = {
-      enable = true;
-      name = "purs-tidy";
-      entry = "purs-tidy format-in-place";
-      files = "\\.purs$";
-    };
+    treefmt.enable = true;
   };
 }

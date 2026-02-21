@@ -1,0 +1,23 @@
+package:
+  name: book
+  dependencies:
+    - console
+    - css
+    - effect
+    - exceptions
+    - halogen
+    - halogen-vdom-string-renderer
+    - node-buffer
+    - node-fs
+    - node-path
+    - prelude
+  test:
+    main: Test.Main
+    dependencies:
+      - spec
+      - spec-node
+      - debug
+workspace:
+  packageSet:
+    registry: 73.1.0
+  extraPackages: {}

@@ -9,16 +9,16 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "chai": "^6.2.2",
-    "eslint": "^4.1.1",
-    "eslint-config-prettier": "^6.15.0",
+    "eslint": "^10.0.1",
+    "eslint-config-prettier": "^10.1.8",
     "globals": "^17.3.0",
     "jsverify": "^0.8.4",
     "karma": "^6.4.4",
     "karma-chai": "^0.1.0",
     "karma-mocha": "^2.0.1",
-    "karma-phantomjs-launcher": "^0.2.3",
+    "karma-phantomjs-launcher": "^1.0.4",
     "mocha": "^11.3.0"
   }
 }

@@ -40,13 +40,25 @@ in
     sudo setcap 'cap_net_bind_service=+ep' ${pkgs.caddy}/bin/caddy
   '';
 
+  treefmt = {
+    enable = true;
+    config.programs = {
+      nixfmt.enable = true;
+      deadnix.enable = true;
+      statix.enable = true;
+      prettier.enable = true;
+    };
+  };
+
+  treefmt.config.settings.formatter = {
+    "eslint" = {
+      command = "eslint";
+      options = [ "--config eslint.config.mjs" ];
+      includes = [ "*.ts" ];
+    };
+  };
+
   git-hooks.hooks = {
-    typos.enable = true;
-    markdownlint.enable = true;
-    nixfmt-rfc-style.enable = true;
-    statix.enable = true;
-    deadnix.enable = true;
-    prettier.enable = true;
-    eslint.enable = true;
+    treefmt.enable = true;
   };
 }

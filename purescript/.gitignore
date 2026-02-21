@@ -24,3 +24,5 @@ generated-docs/
 .psa*
 .spago
 index.js
+index.js.map
+.spec-results

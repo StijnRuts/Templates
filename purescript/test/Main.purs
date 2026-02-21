@@ -3,14 +3,13 @@ module Test.Main where
 import Prelude
 
 import Effect (Effect)
-import Effect.Aff (launchAff_)
 import Test.Spec.Reporter (consoleReporter)
-import Test.Spec.Runner (runSpec)
+import Test.Spec.Runner.Node (runSpecAndExitProcess)
 import Test.Spec (Spec, describe, it, pending)
 import Test.Spec.Assertions (shouldEqual)
 
 main :: Effect Unit
-main = launchAff_ $ runSpec [consoleReporter] do
+main = runSpecAndExitProcess [ consoleReporter ] do
   myspec
 
 myspec :: Spec Unit
