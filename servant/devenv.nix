@@ -33,7 +33,7 @@
   };
 
   processes.serve = {
-    ports.http.allocate = 8180;
+    ports.http.allocate = 8080;
   };
 
   env.SERVANT_PORT = toString config.processes.serve.ports.http.value;

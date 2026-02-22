@@ -1,7 +1,6 @@
 # Devenv
 .devenv*
 devenv.local.nix
-bin/httpd
 
 # direnv
 .direnv

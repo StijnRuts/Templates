@@ -1,6 +1,5 @@
 # Devenv
 .devenv*
-bin/caddy
 bin/sass
 
 # direnv
