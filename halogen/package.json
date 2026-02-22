@@ -1,0 +1,13 @@
+{
+  "name": "halogen",
+  "version": "1.0.0",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "source": "public/index.html",
+  "scripts": {
+    "pscid:build": "bundle",
+    "pscid:test": "test"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  }
+}

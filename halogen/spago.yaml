@@ -1,8 +1,9 @@
 package:
-  name: purescript
+  name: halogen
   dependencies:
     - console
     - effect
+    - halogen
     - prelude
   test:
     main: Test.Main
